@@ -10,7 +10,7 @@ resource "aws_key_pair" "key_pair" {
 
 resource "aws_instance" "webserver" {
   key_name      = aws_key_pair.key_pair.key_name
-  ami           = "ami-067f5c3d5a99edc80"
+  ami           = "ami-0873b46c45c11058d"
   instance_type = "t2.micro"
 
   subnet_id = aws_subnet.subnet_public_dev.id
