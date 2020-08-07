@@ -1,50 +1,23 @@
 provider "aws" {
-  profile = "default"
+  profile = "studies"
   region  = "us-west-2"
 }
 
-resource "aws_security_group" "dummy_sg" {
-  name        = "dummy-sec-gr"
-  description = "Allow SSH inbound traffic (TerraForm)"
-  vpc_id = aws_vpc.dummy_vpc.id
-  
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-
-resource "aws_key_pair" "dummy" {
-  key_name   = "dummy-key"
+resource "aws_key_pair" "key_pair" {
+  key_name   = "key_pair_terraform"
   public_key = file("./terraform.pem")
 }
 
-resource "aws_instance" "dummy" {
-  key_name      = aws_key_pair.dummy.key_name
+resource "aws_instance" "webserver" {
+  key_name      = aws_key_pair.key_pair.key_name
   ami           = "ami-067f5c3d5a99edc80"
   instance_type = "t2.micro"
 
-  subnet_id = aws_subnet.subnet_dummy_public.id
+  subnet_id = aws_subnet.subnet_public_dev.id
 
   vpc_security_group_ids = [
-    aws_security_group.dummy_sg.id,
+    aws_security_group.http_security_group.id,
+    aws_security_group.ssh_security_group.id,
   ]
 
   connection {
@@ -63,6 +36,6 @@ resource "aws_instance" "dummy" {
   }
 
   provisioner "local-exec" {
-    command = "echo ${aws_instance.dummy.public_ip} > ip_address.txt"
+    command = "echo ${self.public_ip} > ip_address.txt"
   }
 }
