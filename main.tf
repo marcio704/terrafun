@@ -54,13 +54,13 @@ resource "aws_instance" "dummy" {
     host        = self.public_ip
   }
 
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "sudo amazon-linux-extras enable nginx1.12",
-  #     "sudo yum -y install nginx",
-  #     "sudo systemctl start nginx"
-  #   ]
-  # }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo amazon-linux-extras enable nginx1.12",
+      "sudo yum -y install nginx",
+      "sudo systemctl start nginx"
+    ]
+  }
 
   provisioner "local-exec" {
     command = "echo ${aws_instance.dummy.public_ip} > ip_address.txt"
