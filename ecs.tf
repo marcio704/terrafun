@@ -34,6 +34,7 @@ resource "aws_ecs_service" "service" {
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.task-definition-test.arn
   desired_count   = 2
+  health_check_grace_period_seconds = 30
   ordered_placement_strategy {
     type  = "binpack"
     field = "cpu"
