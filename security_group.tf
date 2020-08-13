@@ -1,7 +1,7 @@
 resource "aws_security_group" "http_security_group" {
   name        = "http_security_group"
   description = "Allow HTTP inbound traffic (TerraForm)"
-  vpc_id = aws_vpc.dev_vpc.id
+  vpc_id = module.vpc.vpc_id
     
   ingress {
     from_port   = 80
@@ -28,7 +28,7 @@ resource "aws_security_group" "http_security_group" {
 resource "aws_security_group" "ssh_security_group" {
   name        = "ssh_security_group"
   description = "Allow SSH inbound traffic (TerraForm)"
-  vpc_id = aws_vpc.dev_vpc.id
+  vpc_id = module.vpc.vpc_id
   
   ingress {
     from_port   = 22

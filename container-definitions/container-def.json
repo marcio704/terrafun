@@ -1,0 +1,22 @@
+[
+    {
+      "name": "pink-slon",
+      "image": "455482506963.dkr.ecr.us-west-2.amazonaws.com/terra_images:latest",
+      "cpu": 10,
+      "memory": 256,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": { 
+          "awslogs-group" : "/ecs/frontend-container",
+          "awslogs-region": "us-west-2"
+        }
+      }
+    }
+]
