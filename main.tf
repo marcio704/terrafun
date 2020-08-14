@@ -1,5 +1,5 @@
 provider "aws" {
-  profile = "studies"
+  profile = "default"
   region  = "us-west-2"
 }
 
