@@ -1,12 +1,13 @@
 resource "aws_lb" "ecs_lb" {
-  name               = "test-ecs-lb"
+  name               = "ecs-lb-${var.environment}"
   load_balancer_type = "application"
   internal           = false
   subnets            = module.vpc.public_subnets
   
   tags = {
-    "env"       = "dev"
+    "env"       = "${var.environment}"
   }
+  
   security_groups = [
     aws_security_group.http_security_group.id,
     aws_security_group.ssh_security_group.id,
@@ -14,7 +15,7 @@ resource "aws_lb" "ecs_lb" {
 }
 
 resource "aws_lb_target_group" "lb_target_group" {
-  name        = "tf-lb-group"
+  name        = "lb-group-${var.environment}"
   port        = "80"
   protocol    = "HTTP"
   target_type = "instance"
@@ -29,7 +30,7 @@ resource "aws_lb_target_group" "lb_target_group" {
   }
 }
 
-resource "aws_lb_listener" "web_listener" {
+resource "aws_lb_listener" "lb_listener" {
   load_balancer_arn = aws_lb.ecs_lb.arn
   port              = "80"
   protocol          = "HTTP"

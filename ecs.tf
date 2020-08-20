@@ -1,13 +1,13 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name               =  "TERRAFORM-CLUSTER"
-  capacity_providers = [aws_ecs_capacity_provider.test.name]
+  name               =  "CLUSTER-${var.environment}"
+  capacity_providers = [aws_ecs_capacity_provider.capacity_provider.name]
   tags = {
-    "env"       = "dev"
+    "env" = "${var.environment}"
   }
 }
 
-resource "aws_ecs_capacity_provider" "test" {
-  name = "capacity-provider-test"
+resource "aws_ecs_capacity_provider" "capacity_provider" {
+  name = "capacity-provider-${var.environment}"
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.asg.arn
     managed_termination_protection = "ENABLED"
@@ -19,21 +19,20 @@ resource "aws_ecs_capacity_provider" "test" {
   }
 }
 
-# update file container-def, so it's pulling image from ecr
-resource "aws_ecs_task_definition" "task-definition-test" {
-  family                = "web-family"
-  container_definitions = file("container-definitions/container-def.json")
+resource "aws_ecs_task_definition" "task_definition" {
+  family                = "backend-${var.environment}"
+  container_definitions = file("ecs_tasks.json")
   network_mode          = "bridge"
   tags = {
-    "env" = "dev"
+    "env" = "${var.environment}"
   }
 }
 
-resource "aws_ecs_service" "service" {
-  name            = "web-service"
+resource "aws_ecs_service" "ecs_service" {
+  name            = "web-service-${var.environment}"
   cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.task-definition-test.arn
-  desired_count   = 2
+  task_definition = aws_ecs_task_definition.task_definition.arn
+  desired_count   = var.containers_desired_count
   health_check_grace_period_seconds = 30
   ordered_placement_strategy {
     type  = "binpack"
@@ -41,7 +40,7 @@ resource "aws_ecs_service" "service" {
   }
   load_balancer {
     target_group_arn = aws_lb_target_group.lb_target_group.arn
-    container_name   = "pink-slon"
+    container_name   = "backend-${var.environment}"
     container_port   = 80
   }
   # Optional: Allow external changes without Terraform plan difference(for example ASG)
@@ -49,12 +48,12 @@ resource "aws_ecs_service" "service" {
     ignore_changes = [desired_count]
   }
   launch_type = "EC2"
-  depends_on  = [aws_lb_listener.web_listener]
+  depends_on  = [aws_lb_listener.lb_listener]
 }
 
 resource "aws_cloudwatch_log_group" "cloud_log_group" {
-  name = "/ecs/frontend-container"
+  name = "/ecs/backend-container-${var.environment}"
   tags = {
-    "env"       = "dev"
+    "env" = "${var.environment}"
   }
 }

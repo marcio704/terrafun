@@ -1,10 +1,6 @@
-# resource "aws_route53_zone" "main" {
-#   name = "timeliest.xyz"
-# }
-
-resource "aws_route53_record" "www" {
-  zone_id = "Z09701852R6BMHK2XHRQ"
-  name    = "terrafun.timeliest.xyz"
+resource "aws_route53_record" "route53_record_backend" {
+  zone_id = var.zone_id
+  name    = var.domain_name
   type    = "A"
   alias {
     name                   = aws_lb.ecs_lb.dns_name

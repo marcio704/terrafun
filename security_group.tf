@@ -1,6 +1,6 @@
 resource "aws_security_group" "http_security_group" {
-  name        = "http_security_group"
-  description = "Allow HTTP inbound traffic (TerraForm)"
+  name        = "http-security-group-${var.environment}"
+  description = "Allow HTTP inbound traffic (${var.environment})"
   vpc_id = module.vpc.vpc_id
     
   ingress {
@@ -26,8 +26,8 @@ resource "aws_security_group" "http_security_group" {
 }
 
 resource "aws_security_group" "ssh_security_group" {
-  name        = "ssh_security_group"
-  description = "Allow SSH inbound traffic (TerraForm)"
+  name        = "ssh-security-group-${var.environment}"
+  description = "Allow SSH inbound traffic (${var.environment})"
   vpc_id = module.vpc.vpc_id
   
   ingress {

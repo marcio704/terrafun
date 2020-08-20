@@ -1,7 +1,7 @@
 [
     {
       "name": "pink-slon",
-      "image": "455482506963.dkr.ecr.us-west-2.amazonaws.com/terra_images:latest",
+      "image": "455482506963.dkr.ecr.us-west-2.amazonaws.com/backend-dev:latest",
       "cpu": 10,
       "memory": 256,
       "essential": true,
