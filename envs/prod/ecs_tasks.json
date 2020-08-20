@@ -1,6 +1,6 @@
 [
     {
-      "name": "pink-slon",
+      "name": "backend-production",
       "image": "455482506963.dkr.ecr.us-west-2.amazonaws.com/backend-production:latest",
       "cpu": 10,
       "memory": 256,
