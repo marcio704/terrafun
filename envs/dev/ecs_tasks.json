@@ -1,6 +1,6 @@
 [
     {
-      "name": "pink-slon",
+      "name": "backend-dev",
       "image": "455482506963.dkr.ecr.us-west-2.amazonaws.com/backend-dev:latest",
       "cpu": 10,
       "memory": 256,
@@ -14,7 +14,7 @@
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": { 
-          "awslogs-group" : "/ecs/frontend-container",
+          "awslogs-group" : "/ecs/backend-container-dev",
           "awslogs-region": "us-west-2"
         }
       }

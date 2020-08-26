@@ -9,7 +9,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 resource "aws_ecs_capacity_provider" "capacity_provider" {
   name = "capacity-provider-${var.environment}"
   auto_scaling_group_provider {
-    auto_scaling_group_arn         = aws_autoscaling_group.asg.arn
+    auto_scaling_group_arn         = var.auto_scaling_group_arn
     managed_termination_protection = "ENABLED"
 
     managed_scaling {
@@ -39,7 +39,7 @@ resource "aws_ecs_service" "ecs_service" {
     field = "cpu"
   }
   load_balancer {
-    target_group_arn = aws_lb_target_group.lb_target_group.arn
+    target_group_arn = var.target_group_arn
     container_name   = "backend-${var.environment}"
     container_port   = 80
   }
@@ -48,7 +48,7 @@ resource "aws_ecs_service" "ecs_service" {
     ignore_changes = [desired_count]
   }
   launch_type = "EC2"
-  depends_on  = [aws_lb_listener.lb_listener]
+  depends_on  = [var.depends]
 }
 
 resource "aws_cloudwatch_log_group" "cloud_log_group" {

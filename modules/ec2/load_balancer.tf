@@ -2,7 +2,7 @@ resource "aws_lb" "ecs_lb" {
   name               = "ecs-lb-${var.environment}"
   load_balancer_type = "application"
   internal           = false
-  subnets            = module.vpc.public_subnets
+  subnets            = var.public_subnets
   
   tags = {
     "env"       = "${var.environment}"
@@ -19,7 +19,7 @@ resource "aws_lb_target_group" "lb_target_group" {
   port        = "80"
   protocol    = "HTTP"
   target_type = "instance"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
   health_check {
     path                = "/"
     healthy_threshold   = 2

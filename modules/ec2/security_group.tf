@@ -1,7 +1,7 @@
 resource "aws_security_group" "http_security_group" {
   name        = "http-security-group-${var.environment}"
   description = "Allow HTTP inbound traffic (${var.environment})"
-  vpc_id = module.vpc.vpc_id
+  vpc_id = var.vpc_id
     
   ingress {
     from_port   = 80
@@ -28,7 +28,7 @@ resource "aws_security_group" "http_security_group" {
 resource "aws_security_group" "ssh_security_group" {
   name        = "ssh-security-group-${var.environment}"
   description = "Allow SSH inbound traffic (${var.environment})"
-  vpc_id = module.vpc.vpc_id
+  vpc_id = var.vpc_id
   
   ingress {
     from_port   = 22

@@ -1,11 +1,13 @@
 # TODO as for environment
-ENVIRONMENT="production"
+ENVIRONMENT="dev"
+
+export AWS_PROFILE="studies"
 
 TF_VAR_environment=$ENVIRONMENT
 IMAGE_NAME=backend-$ENVIRONMENT
 export TF_VAR_environment
 #--------
-#docker build ../../project -t terra-python:latest
+docker build ../../project -t terra-python:latest
 
 terraform apply -target aws_ecr_repository.images_repository -auto-approve 
 
@@ -16,4 +18,4 @@ docker tag $(docker images terra-python:latest -q) $AWS_ID.dkr.ecr.us-west-2.ama
 
 docker push $AWS_ID.dkr.ecr.us-west-2.amazonaws.com/$IMAGE_NAME:latest
 
-terraform apply -auto-approve  ../../ 
+terraform apply -auto-approve

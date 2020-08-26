@@ -1,6 +1,3 @@
-variable "region" {
-  default = "us-west-2"
-}
 
 variable "ec2_type" {
   default = "t2.micro"
@@ -22,17 +19,12 @@ variable "zone_id" {
   default = "Z09701852R6BMHK2XHRQ"
 }
 
-variable "containers_desired_count" {
-  default = 2
-}
-
-variable "available_zones" {
-    type    = list
-    default = ["us-west-2a", "us-west-2b", "us-west-2c"]
-}
 
 # dynamic input if not exists a .tfvars defined
 
 variable "environment" {}
-variable "profile" {}
+variable "public_subnets" {}
+variable "vpc_id" {}
+variable "iam_instance_profile" {}
 variable "domain_name" {}
+variable "key_name" {}
